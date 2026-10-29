@@ -1,0 +1,79 @@
+# ==============================================================================
+# 1. TEST FILES & DIRECTORIES (Theo yêu cầu: không push file test)
+# ==============================================================================
+tests/
+**/tests/
+test_*.py
+*_test.py
+*.test.py
+
+# ==============================================================================
+# 2. PYTHON & BACKEND
+# ==============================================================================
+# Môi trường ảo (Virtual Environments)
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Database files sinh ra khi test/chạy local
+*.db
+*.sqlite
+*.sqlite3
+tasks.db
+backend/tasks.db
+
+# Pytest & Coverage cache
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ==============================================================================
+# 3. ANDROID & GRADLE (Dành cho project Android)
+# ==============================================================================
+.gradle/
+build/
+*/build/
+app/build/
+
+# Android Studio & Gradle local files
+local.properties
+.cxx/
+*.apk
+*.aab
+captures/
+output.json
+
+# Keystore files
+*.jks
+*.keystore
+
+# ==============================================================================
+# 4. IDE & CẤU HÌNH HỆ ĐIỀU HÀNH
+# ==============================================================================
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.env.local
+

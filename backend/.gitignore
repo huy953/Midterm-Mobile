@@ -1,0 +1,32 @@
+# ==============================================================================
+# BACKEND GITIGNORE
+# ==============================================================================
+
+# 1. Bỏ qua thư mục test theo yêu cầu
+tests/
+test_*.py
+*_test.py
+
+# 2. Python Virtual Environments
+venv/
+.venv/
+env/
+
+# 3. Database SQLite sinh ra khi chạy local
+*.db
+*.sqlite
+*.sqlite3
+tasks.db
+
+# 4. Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+
+# 5. IDE & Environment variables
+.idea/
+.vscode/
+.env
+
