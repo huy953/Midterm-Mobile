@@ -4,13 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.crud import task as crud_task
-from app.schemas.task import (
-    TaskCreate,
-    TaskUpdate,
-    TaskDTO,
-    SyncPayload,
-    SyncResult,
-)
+from app.schemas.task import ( TaskCreate, TaskUpdate, TaskDTO, SyncPayload, SyncResult)
 from app.services.sync_service import sync_tasks
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
@@ -28,6 +22,20 @@ def get_tasks_endpoint(
     """
     tasks = crud_task.get_tasks(db=db, since=since)
     return tasks
+
+@router.get("/{task_id}", response_model=TaskDTO, summary="Get task by ID")
+def get_task_by_id_endpoint(
+    task_id: str,
+    db: Session = Depends(get_db),
+) -> TaskDTO:
+    """Retrieve a single task by its unique ID."""
+    db_task = crud_task.get_task_by_id(db=db, task_id=task_id)
+    if not db_task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Task with id '{task_id}' not found.",
+        )
+    return db_task
 
 
 @router.post("/sync", response_model=SyncResult, summary="Batch push synchronization with LWW")
@@ -62,20 +70,6 @@ def create_task_endpoint(
     created_task = crud_task.create_task(db=db, task_in=task_in)
     return created_task
 
-
-@router.get("/{task_id}", response_model=TaskDTO, summary="Get task by ID")
-def get_task_by_id_endpoint(
-    task_id: str,
-    db: Session = Depends(get_db),
-) -> TaskDTO:
-    """Retrieve a single task by its unique ID."""
-    db_task = crud_task.get_task_by_id(db=db, task_id=task_id)
-    if not db_task:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Task with id '{task_id}' not found.",
-        )
-    return db_task
 
 
 @router.put("/{task_id}", response_model=TaskDTO, summary="Update an existing task")

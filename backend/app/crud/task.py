@@ -26,13 +26,16 @@ def get_task_by_id(db: Session, task_id: str) -> Optional[Task]:
 def create_task(db: Session, task_in: TaskCreate) -> Task:
     """Create a new task record in the database."""
     task_id = task_in.id or str(uuid.uuid4())
-    updated_at = task_in.updated_at if task_in.updated_at is not None else current_timestamp_ms()
+    now_ms = current_timestamp_ms()
+    updated_at = task_in.updated_at if task_in.updated_at is not None else now_ms
+    created_at = task_in.created_at if task_in.created_at is not None else updated_at
 
     db_task = Task(
         id=task_id,
         title=task_in.title,
         is_completed=task_in.is_completed,
         is_deleted=task_in.is_deleted,
+        created_at=created_at,
         updated_at=updated_at,
     )
     db.add(db_task)

@@ -102,6 +102,7 @@ sequenceDiagram
 | `title` | `String` | Client & Server | Tiêu đề công việc (bắt buộc, độ dài tối đa 255 ký tự). |
 | `description` | `String?` | Client & Server | Mô tả chi tiết công việc (cho phép `null` / rỗng). |
 | `is_completed` | `Boolean` | Client & Server | Trạng thái hoàn thành (`true`: đã xong, `false`: chưa xong). Mặc định `false`. |
+| `created_at` | `Long (Unix ms)` | Client & Server | Mốc thời gian tạo bản ghi ban đầu (milliseconds). |
 | `updated_at` | `Long (Unix ms)` | Client & Server | Mốc thời gian chỉnh sửa mới nhất (milliseconds) để phân giải xung đột (**Last-Write-Wins**). |
 | `is_deleted` | `Boolean` | Client & Server | Cờ xóa logic (**Soft Delete**). Không xóa vật lý để Server và các thiết bị khác nhận diện lệnh xóa. |
 | `sync_status` | `String / Enum` | **Chỉ có ở Room DB** | Trạng thái đồng bộ cục bộ: `SYNCED`, `PENDING_INSERT`, `PENDING_UPDATE`, `PENDING_DELETE`, `FAILED`. |

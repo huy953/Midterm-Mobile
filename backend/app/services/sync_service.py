@@ -34,11 +34,14 @@ def sync_tasks(db: Session, tasks: list[TaskDTO]) -> SyncResult:
 
         if existing_task is None:
             # Case 1: New task from client
+            now_ms = current_timestamp_ms()
+            created_at = getattr(task_dto, "created_at", None) or task_dto.updated_at or now_ms
             new_task = Task(
                 id=task_dto.id,
                 title=task_dto.title,
                 is_completed=task_dto.is_completed,
                 is_deleted=task_dto.is_deleted,
+                created_at=created_at,
                 updated_at=task_dto.updated_at,
             )
             db.add(new_task)
@@ -51,6 +54,8 @@ def sync_tasks(db: Session, tasks: list[TaskDTO]) -> SyncResult:
                 existing_task.is_completed = task_dto.is_completed
                 existing_task.is_deleted = task_dto.is_deleted
                 existing_task.updated_at = task_dto.updated_at
+                if not existing_task.created_at and getattr(task_dto, "created_at", None):
+                    existing_task.created_at = task_dto.created_at
                 db.add(existing_task)
                 applied_ids.append(task_dto.id)
             elif task_dto.updated_at == existing_task.updated_at:

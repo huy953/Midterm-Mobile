@@ -1,5 +1,10 @@
+import time
 from sqlalchemy import Column, String, Boolean, BigInteger
 from app.database import Base
+
+
+def current_time_ms() -> int:
+    return int(time.time() * 1000)
 
 
 class Task(Base):
@@ -10,6 +15,7 @@ class Task(Base):
         title: Task summary or title.
         is_completed: Completion status flag.
         is_deleted: Soft delete flag (logical deletion).
+        created_at: BigInteger Unix epoch timestamp in milliseconds when created.
         updated_at: BigInteger Unix epoch timestamp in milliseconds for LWW conflict resolution.
     """
     __tablename__ = "tasks"
@@ -18,10 +24,12 @@ class Task(Base):
     title = Column(String(255), nullable=False)
     is_completed = Column(Boolean, default=False, nullable=False)
     is_deleted = Column(Boolean, default=False, nullable=False)
+    created_at = Column(BigInteger, default=current_time_ms, nullable=False)
     updated_at = Column(BigInteger, nullable=False, index=True)
 
     def __repr__(self) -> str:
         return (
             f"<Task(id='{self.id}', title='{self.title}', "
-            f"completed={self.is_completed}, deleted={self.is_deleted}, updated_at={self.updated_at})>"
+            f"completed={self.is_completed}, deleted={self.is_deleted}, "
+            f"created_at={self.created_at}, updated_at={self.updated_at})>"
         )

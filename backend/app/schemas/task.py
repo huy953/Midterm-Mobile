@@ -24,6 +24,10 @@ class TaskCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=255, description="Task title")
     is_completed: bool = Field(default=False, description="Completion status flag")
     is_deleted: bool = Field(default=False, description="Soft delete flag")
+    created_at: Optional[int] = Field(
+        default=None,
+        description="Unix epoch timestamp in milliseconds (defaults to current time if omitted)",
+    )
     updated_at: Optional[int] = Field(
         default=None,
         description="Unix epoch timestamp in milliseconds (defaults to current time if omitted)",
@@ -35,6 +39,10 @@ class TaskUpdate(BaseModel):
     title: Optional[str] = Field(default=None, min_length=1, max_length=255)
     is_completed: Optional[bool] = Field(default=None)
     is_deleted: Optional[bool] = Field(default=None)
+    created_at: Optional[int] = Field(
+        default=None,
+        description="Unix epoch timestamp in milliseconds",
+    )
     updated_at: Optional[int] = Field(
         default=None,
         description="Unix epoch timestamp in milliseconds (defaults to current time if omitted)",
@@ -47,6 +55,10 @@ class TaskDTO(BaseModel):
     title: str = Field(..., description="Task title")
     is_completed: bool = Field(default=False, description="Completion status flag")
     is_deleted: bool = Field(default=False, description="Soft delete flag")
+    created_at: int = Field(
+        default_factory=current_timestamp_ms,
+        description="Unix epoch timestamp in milliseconds when task was created",
+    )
     updated_at: int = Field(..., description="Unix epoch timestamp in milliseconds")
 
     model_config = ConfigDict(from_attributes=True)
